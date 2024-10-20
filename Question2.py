@@ -1,0 +1,15 @@
+import numpy as np
+import robotic as ry
+import os
+
+# Set the DISPLAY environment variable
+os.environ['DISPLAY'] = ':0'
+
+C = ry.Config()
+
+
+
+C.view()
+
+# Prevent the script from exiting immediately
+input("Press Enter to exit...")
