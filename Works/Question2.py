@@ -6,7 +6,7 @@ import os
 os.environ['DISPLAY'] = ':0'
 
 K = ry.Config()
-K.addFile("two_link_manipulator.g")
+K.addFile("Works/two_link_manipulator.g")
 
 target = K.addFrame("target")
 
