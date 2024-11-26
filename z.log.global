@@ -1,5 +1,5 @@
 ** compiled at:     Jun 26 2024 17:44:29
-** execution start: 2024-11-26 22:19:36:479352
+** execution start: 2024-11-26 23:42:17:274201
 graph.cpp:initParameters:1512(3) opening config file 'rai.cfg'
 graph.cpp:initParameters:1519(3)  - failed
 graph.cpp:initParameters:1525(3) opening base config file '/root/local/rai/../local.cfg'
@@ -66,8 +66,3 @@ util.cpp:cd_file:1041(3) entering path 'franka_description/meshes/visual' from '
 util.cpp:getIs:1070(3) opening input file 'finger.ply'
 util.cpp:cd_start:1033(3) entering path '/home/yagz/rai_venv/robotics/rai-robotModels/panda'
 util.cpp:cd_start:1033(3) entering path '/home/yagz/rai_venv/robotics'
-** execution stop: 2024-11-26 22:22:55:448932
-** real time: 198.97sec
-** CPU time: 17.7031
-
-** set+queried params:
