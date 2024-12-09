@@ -1,0 +1,9 @@
+** compiled at:     Jun 26 2024 17:44:29
+** execution start: 2024-12-09 17:56:07:770020
+graph.cpp:initParameters:1512(3) opening config file 'rai.cfg'
+graph.cpp:initParameters:1519(3)  - failed
+graph.cpp:initParameters:1525(3) opening base config file '/root/local/rai/../local.cfg'
+graph.cpp:initParameters:1531(3)  - failed
+util.cpp:cd_start:1033(3) entering path '/home/yagz/rai_venv/robotics/Works/w2'
+util.cpp:cd_file:1041(3) entering path '/home/yagz/rai_venv/robotics/Question-01' from '/home/yagz/rai_venv/robotics/Works/w2'
+util.cpp:cd_file:1042(-2) couldn't change to directory '/home/yagz/rai_venv/robotics/Question-01' from '/home/yagz/rai_venv/robotics/Works/w2'
