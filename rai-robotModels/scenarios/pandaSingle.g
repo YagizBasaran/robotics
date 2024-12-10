@@ -1,12 +1,13 @@
 world: {}
 
 ### table
-
-table(world): {
- shape: ssBox, Q: "t(0 0. .6)", size: [2.5, 2.5, .1, .02], color: [.3, .3, .3],
- contact: 1, logical: { },
+# Table (base for the setup)
+table (world): {
+ shape: ssBox, Q: "t(0 0 .6)", size: [2., 4., .2, .04], color: [.3, .3, .3]
+ fixed, contact, logical:{ }
  friction: .1
 }
+
 
 ### one panda
 
@@ -16,7 +17,7 @@ Include: <panda_fixGripper.g>
 
 Prefix: False
 
-Edit l_panda_base (table): { Q: "t(0 -.2 .05) d(90 0 0 1)" joint:rigid }
+
 
 Edit l_panda_joint2: { q: -.5 }
 Edit l_panda_joint4: { q: -2 }
