@@ -91,7 +91,7 @@ def strech():
     strech_frame1.setRelativePosition([0, 0.75, 1.1])
     strech_frame2 =C.addFrame('strech_frame2', 'table')
     strech_frame2.setShape(ry.ST.marker, size=[.1])
-    strech_frame2.setRelativePosition([0, 1.75, 1.25])
+    strech_frame2.setRelativePosition([0, 2.2, 1.5])
     komo = ry.KOMO()
     komo.setConfig(C, True)
     komo.setTiming(2., 1, 5., 1)
