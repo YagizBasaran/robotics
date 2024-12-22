@@ -47,7 +47,7 @@ ring4(ring): {
 
 # Stick placed on the table, now fixed so it won't fall or roll
 stick (table): {
-  shape: cylinder, Q: "t(0 0.6 .30)", size: [.6, .03], color: [.6, .6, .6]
+  shape: cylinder, Q: "t(0 -0.9 .30)", size: [.6, .015], color: [.6, .6, .6]
   joint: rigid
   contact: 1
   friction: 1000

@@ -5,6 +5,8 @@ import os
 
 # Set the DISPLAY environment variable
 os.environ['DISPLAY'] = ':0'
+#print("RAI Robotics version:", ry.__version__) 0.1.10
+
 
 # Load the environment
 C = ry.Config()
@@ -21,10 +23,10 @@ def align_gripper_to_ring():
     approach_waypoint = C.addFrame('approach_waypoint', 'ring1')  # Using ring1 for alignment
     align_waypoint = C.addFrame('align_waypoint', 'ring1')
     approach_waypoint.setShape(ry.ST.marker, size=[.1])
-    approach_waypoint.setRelativePose('t(0 0 0.1) d(90 -1 0 0)')  # Position above ring1
+    approach_waypoint.setRelativePose('t(0 0 0.1) d(90 0 0 0)')  # Position above ring1
 
     align_waypoint.setShape(ry.ST.marker, size=[.1])
-    align_waypoint.setRelativePose(' d(90 -1 0 0)')  # Align directly to ring1
+    align_waypoint.setRelativePose(' d(90 0 0 0)')  # Align directly to ring1
    
     komo = ry.KOMO()
     komo.setConfig(C, True)
@@ -68,38 +70,34 @@ def grasp_ring():
    
 #     return komo.getPath()
 
-def throw():
-    strech_frame =C.addFrame('strech_frame', 'table')
-    strech_frame.setShape(ry.ST.marker, size=[.1])
-    strech_frame.setRelativePosition([1, 1, 1])
+def strech():
+    strech_frame1 =C.addFrame('strech_frame1', 'table')
+    strech_frame1.setShape(ry.ST.marker, size=[.1])
+    strech_frame1.setRelativePosition([0, 2.5, 0.5])
     komo = ry.KOMO()
     komo.setConfig(C, True)
     komo.setTiming(2., 1, 5., 1)
     komo.addControlObjective([], 0, 1e-0)
     komo.addObjective([], ry.FS.accumulatedCollisions, [], ry.OT.eq, [1e1])
     komo.addObjective([], ry.FS.jointLimits, [], ry.OT.ineq)
-    komo.addObjective([1.], ry.FS.positionDiff, ['l_gripper', 'strech_frame'], ry.OT.eq, [1e1])
+    komo.addObjective([1.], ry.FS.positionDiff, ['l_gripper', 'strech_frame1'], ry.OT.eq, [1e1], order =0)
     solver = ry.NLP_Solver()
     solver.setProblem(komo.nlp())
     solver.setOptions(stopTolerance=1e-2, verbose=4)
     solver.solve()
     return komo.getPath()
 
-def strech():
-    strech_frame1 =C.addFrame('strech_frame1', 'table')
-    strech_frame1.setShape(ry.ST.marker, size=[.1])
-    strech_frame1.setRelativePosition([0, 0.75, 1.1])
-    strech_frame2 =C.addFrame('strech_frame2', 'table')
-    strech_frame2.setShape(ry.ST.marker, size=[.1])
-    strech_frame2.setRelativePosition([0, 2.2, 1.5])
+
+def throw():
+    rel_point = [0,1.6, 1]
     komo = ry.KOMO()
     komo.setConfig(C, True)
     komo.setTiming(2., 1, 5., 1)
     komo.addControlObjective([], 0, 1e-0)
     komo.addObjective([], ry.FS.accumulatedCollisions, [], ry.OT.eq, [1e1])
     komo.addObjective([], ry.FS.jointLimits, [], ry.OT.ineq)
-    komo.addObjective([1.], ry.FS.positionDiff, ['l_gripper', 'strech_frame1'], ry.OT.eq, [1e1])
-    komo.addObjective([2.], ry.FS.positionDiff, ['l_gripper', 'strech_frame2'], ry.OT.eq, [1e1])
+    komo.addObjective([1.], ry.FS.position, ['l_gripper'], ry.OT.eq,[1e1],target=rel_point )
+    komo.addObjective([1.], ry.FS.position, ['l_gripper'],ry.OT.eq, [1e1], target = [0, -3.4, 8.355], order=1, )
     solver = ry.NLP_Solver()
     solver.setProblem(komo.nlp())
     solver.setOptions(stopTolerance=1e-2, verbose=4)
@@ -114,13 +112,25 @@ def main():
    
     grasp_ring()
     bot.wait(C, forKeyPressed=False, forTimeToEnd=True)
-    bot.home(C)
-    strech_path = strech()
-    bot.move(strech_path,[.1, .2] )
-    bot.gripperMove(ry._left, width=1, speed= 1)
+    q = bot.get_qHome()
+    q[2] = q[2] - 0.33
+    q[3] = q[3] + 4
+    bot.moveTo(q)
+    # strech_path = strech()
+    # bot.move(strech_path,[1., 2.] )
+    bot.wait(C, forKeyPressed=False, forTimeToEnd=True)
+    throw_path = throw()
+    bot.move(throw_path,[0.1, 1.08] )
+    while bot.getTimeToEnd() > 0:
+        bot.sync(C, 0.05)
+        gripper_position = C.frame("l_gripper").getPosition()
+        gripper_height = gripper_position[2]
+
+
+        if gripper_height > 0.52:
+            bot.gripperMove(ry._left, width=10, speed= 10)
     bot.wait(C, forKeyPressed= False, forTimeToEnd= True)
-    while bot.getTimeToEnd()>0:
-        bot.sync(C, .1)
+
 
 main()
 input("Stopping immediate close")
