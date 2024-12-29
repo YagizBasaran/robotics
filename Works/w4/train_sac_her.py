@@ -1,4 +1,5 @@
 import gymnasium as gym
+import gymnasium_robotics
 from replay_buffer import ReplayBuffer
 from models import Actor, Critic
 from utils import evaluate, plot_results
@@ -6,9 +7,11 @@ import torch
 import torch.optim as optim
 import numpy as np
 
+gym.register_envs(gymnasium_robotics)
+
 # Training parameters
-ENV_NAME = "FetchReach-v1"
-NUM_EPISODES = 500
+ENV_NAME = "FetchReach-v3"
+NUM_EPISODES = 50
 BATCH_SIZE = 64
 GAMMA = 0.98
 TAU = 0.005
@@ -41,7 +44,7 @@ def train_sac_her():
     # Training loop
     success_rates = []
     for episode in range(NUM_EPISODES):
-        observation = env.reset()
+        observation, info = env.reset()  # Updated to unpack the tuple
         state, goal = observation["observation"], observation["desired_goal"]
         episode_transitions = []
 
@@ -49,7 +52,8 @@ def train_sac_her():
         while not done:
             state_goal = np.concatenate([state, goal])
             action = actor(torch.FloatTensor(state_goal).unsqueeze(0)).detach().numpy()[0]
-            next_observation, reward, done, _ = env.step(action)
+            next_observation, reward, terminated, truncated, info = env.step(action)  # Updated to unpack five values
+            done = terminated or truncated
             next_state = next_observation["observation"]
             achieved_goal = next_observation["achieved_goal"]
 
