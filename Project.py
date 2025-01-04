@@ -7,7 +7,6 @@ import os
 os.environ['DISPLAY'] = ':0'
 #print("RAI Robotics version:", ry.__version__) 0.1.10
 
-
 # Load the environment
 C = ry.Config()
 C.addFile("/home/yagz/rai_venv/robotics/penvironment.g")
@@ -87,7 +86,6 @@ def strech():
     solver.solve()
     return komo.getPath()
 
-
 def throw():
     rel_point = [0,1.6, 1]
     komo = ry.KOMO()
@@ -113,24 +111,22 @@ def main():
     grasp_ring()
     bot.wait(C, forKeyPressed=False, forTimeToEnd=True)
     q = bot.get_qHome()
-    q[2] = q[2] - 0.33
+    q[2] = q[2] - 0.31
     q[3] = q[3] + 4
     bot.moveTo(q)
     # strech_path = strech()
     # bot.move(strech_path,[1., 2.] )
     bot.wait(C, forKeyPressed=False, forTimeToEnd=True)
     throw_path = throw()
-    bot.move(throw_path,[0.1, 1.08] )
+    bot.move(throw_path,[0.1, 1.2] )
     while bot.getTimeToEnd() > 0:
         bot.sync(C, 0.05)
         gripper_position = C.frame("l_gripper").getPosition()
         gripper_height = gripper_position[2]
 
-
         if gripper_height > 0.52:
             bot.gripperMove(ry._left, width=10, speed= 10)
     bot.wait(C, forKeyPressed= False, forTimeToEnd= True)
-
 
 main()
 input("Stopping immediate close")

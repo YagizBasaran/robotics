@@ -47,7 +47,7 @@ ring4(ring): {
 
 # Stick placed on the table, now fixed so it won't fall or roll
 stick (table): {
-  shape: cylinder, Q: "t(0 -0.9 .30)", size: [.6, .015], color: [.6, .6, .6]
+  shape: cylinder, Q: "t(0 -1 .30)", size: [.6, .02], color: [.6, .6, .6]
   joint: rigid
   contact: 1
   friction: 1000
@@ -60,3 +60,20 @@ Include: </home/yagz/rai_venv/robotics/rai-robotModels/scenarios/pandaSingle.g>
 (table l_panda_base): { joint: rigid, Q: "t(0 1.8 .05) d(-90 0 0 1)" }
 
 Edit panda_finger_joint1: { joint_active: false }
+
+# 1 Overhead camera, looking straight down at
+camera1(table): {
+  shape: marker, size:[0.1],
+  focalLength: 0.7,          
+  width: 640, height: 360,   
+  zRange:[0.3, 5.0],         
+  Q: "t(0 -2 0.5) d(-90 1 0 0)"
+}
+
+camera2(table): {
+  shape: marker, size:[0.1],
+  focalLength: 0.7,          
+  width: 640, height: 360,   
+  zRange:[0.3, 5.0],         
+  Q: "t(0 2 0.5) d(90 1 0 0)"
+}
